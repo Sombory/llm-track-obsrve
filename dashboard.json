@@ -1,0 +1,18 @@
+{
+  "title": "LLM & Agents Observability",
+  "description": "Template for metrics emitted by llmobs.DatadogStatsdExporter",
+  "layout_type": "ordered",
+  "widgets": [
+    {"definition": {"type": "timeseries", "title": "p95 latency by span (ms)",
+      "requests": [{"q": "p95:llm.latency_ms{*} by {span}", "display_type": "line"}]}},
+    {"definition": {"type": "query_value", "title": "Error rate",
+      "requests": [{"q": "sum:llm.errors{*}.as_count() / sum:llm.requests{*}.as_count() * 100"}], "precision": 2}},
+    {"definition": {"type": "timeseries", "title": "Tokens (input / output) by model",
+      "requests": [{"q": "sum:llm.tokens.input{*} by {model}.as_count()", "display_type": "bars"},
+                   {"q": "sum:llm.tokens.output{*} by {model}.as_count()", "display_type": "bars"}]}},
+    {"definition": {"type": "timeseries", "title": "Estimated cost (USD) by service",
+      "requests": [{"q": "sum:llm.cost_usd{*} by {service}.as_count()", "display_type": "bars"}]}},
+    {"definition": {"type": "timeseries", "title": "Groundedness score",
+      "requests": [{"q": "avg:llm.quality.groundedness{*} by {span}", "display_type": "line"}]}}
+  ]
+}
